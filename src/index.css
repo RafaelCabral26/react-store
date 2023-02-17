@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
     input[type='number']::-webkit-outer-spin-button,
     input[type='number']::-webkit-inner-spin-button,
@@ -10,4 +11,9 @@
       margin: 0;
       -moz-appearance: textfield !important;
     }
+ }
+ @layer components {
+  .input-field {
+    @apply m-2 border-b-2 focus:outline-teal-200 focus:border-none focus:outline-none focus:ring-transparent border-teal-100 rounded-xl
+  }
  }
