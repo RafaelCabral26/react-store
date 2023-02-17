@@ -7,7 +7,7 @@ from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = key
-client = MongoClient("mongodb+srv://todos:osO5eYspfv26Ffl6@cluster0.3iwfkdp.mongodb.net/?retryWrites=true&w=majority")
+client = MongoClient("mongodb+srv://:@cluster0.3iwfkdp.mongodb.net/?retryWrites=true&w=majority")
 db = client.vendinha
 users = db.users
 app.run(debug=True)
