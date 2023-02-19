@@ -4,7 +4,7 @@ export const products = [
       price:"900,00",
       description:"celular lorem ipsum",
       discount:"0",
-      photo:"https://dummyimage.com/250x250/5eead4/fff.jpg&text=Celular",
+      photo:"https://dummyimage.com/224x224/5eead4/fff.jpg&text=Celular",
       group:"eletronicos"
     },
     {

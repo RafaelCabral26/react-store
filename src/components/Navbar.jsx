@@ -4,8 +4,28 @@ function NavBar(props) {
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = React.useState("produtos");
   const [initialProductState] = React.useState(props.produtos);
-  const [openFilter, setOpenFilter] = React.useState(false)
-  const handleSelectedAndInitial = (e) => {
+  const [openFilter, setOpenFilter] = React.useState(false);
+  const [perfil, setPerfil] = React.useState(0);
+
+  const handleQuery = (e) => {
+    if (e.target.value == ""){
+      return props.productsState(initialProductState)
+    }
+    let result = props.productsState(
+    props.produtos.filter(prod => {
+        
+        if(e.target.value == "") {
+          return prod
+        }else if(prod.name.toLowerCase().substring(0,3).includes(e.target.value.toLowerCase())) {
+      return prod
+      }
+      return console.log("Nenhum item foi encontrado!");
+    })
+    
+    )
+    return result
+  }
+  const handleSelectedAndInitial = (e) => {    
     setSelected(e.target.value);
     props.productsState(initialProductState);
   };
@@ -18,27 +38,22 @@ function NavBar(props) {
       })
     );
   };
-const handleDropdownFilter = () => {
-  setOpenFilter(!openFilter)
-}
+  const handleDropdownFilter = () => {
+    setOpenFilter(!openFilter);
+  };
   const handleDropdownSearch = () => {
     setOpen(!open);
   };
 
   return (
     <nav>
-      <div className="grid bg-white  grid-flow-col-dense grid-cols-12 justify-around    h-26 text-center font-mono text-2x font-extrabold border-b-4 border-x-2 p-3">
+      <div className="grid bg-white  grid-flow-col-dense grid-cols-12 justify-around    h-16 text-center font-mono text-2x font-extrabold border-b-4 border-x-2 ">
         <div className=" col-start-1 sm:col-start-2 col-span-2 mt-2 w-40 sm:w-96">
-          <img src="src/assets/e-store-logo.svg" alt="logo e-cart" className="w-60" />
+          <img src="src/assets/e-store-logo.svg" alt="logo e-cart" className="w-40" />
         </div>
-        <div className="flex m-5 my-3 col-start-9 md:col-start-7 lg:col-span-5 text-lg justify-center">
-          <label className="relative block flex m-5 my-3 col-start-9 md:col-start-7 lg:col-span-5 text-lg justify-center text-slate-700">
-            <input
-              className="w-32 lg:w-96 bg-white sm:block hidden border border-slate-400 drop-shadow-md rounded-md py-2 focus:outline-teal-300
-              outline-none"
-              placeholder="Pesquisar..."
-              type="text"
-            />
+        <div className="flex col-start-9 md:col-start-7 lg:col-span-5 text-sm justify-center">
+          <label className="relative block flex  col-start-9 md:col-start-7 lg:col-span-5 justify-center text-slate-700">
+            <input className="w-56 lg:w-96  bg-white sm:block hidden input-field border-2 border-teal-300 focus:border-teal-500" placeholder="Pesquisar..." type="text" onChange={handleQuery} />
 
             <button className="absolute inset-y-0 right-0 flex items-center pr-3 hidden sm:block">
               <svg className="h-5 w-5 fill-black" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30">
@@ -53,10 +68,9 @@ const handleDropdownFilter = () => {
             {open ? <input autoFocus className=" absolute top-6 right-0.5" placeholder="Pesquisar..." onBlur={handleDropdownSearch} /> : null}
           </label>
         </div>
-
-        <select className="m-auto  col-start-4 bg-slate-100 text-sm sm:text-2xl xl:block hidden  text-slate-500 hover:text-teal-300 rounded-lg" onChange={handleSelectedAndInitial}>
-          <option value="produtos" onClick={handleFilter}>
-            <span>Produtos</span>
+        <select className="m-auto col-start-4 bg-slate-100 text-sm sm:text-sm xl:block hidden  text-slate-500 hover:text-teal-300 rounded-lg" onChange={handleSelectedAndInitial}>
+        <option value="produtos" onClick={handleFilter}>
+            Produtos
           </option>
           <option value="roupas" onClick={handleFilter}>
             Roupas
@@ -65,12 +79,18 @@ const handleDropdownFilter = () => {
             Eletronicos
           </option>
         </select>
-
-        <a className="m-auto col-start-10 text-sm sm:text-2xl text-slate-500 hover:text-teal-300 hover:border-b-2 border-teal-300" href={"/register"}>Login</a>
+        {perfil == 0 ? (
+            <a className="m-auto col-start-10 text-sm sm:text-lg text-slate-500 hover:text-teal-300 hover:underline  border-teal-300 " href={"/login"}>
+              Login
+            </a>)
+            : perfil==1 ? ( <a className="m-auto col-start-10 text-sm sm:text-lg text-slate-500 hover:text-teal-300 hover:underline  border-teal-300 " href={"/admin"}>
+        Admin
+      </a>) : null
+        }
         <span className="m-auto col-start-12 md:col-start-11 ">
           <img src="src/assets/cart-svgrepo-com.svg" alt="" className="w-10" />
         </span>
-
+        
         <button className="block sm:hidden col-start-7" onClick={handleDropdownFilter}>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
             <path
@@ -80,19 +100,24 @@ const handleDropdownFilter = () => {
             />
           </svg>
         </button>
-        {openFilter ?  <select className="appearance-none m-auto col-start-4 bg-slate-100 text-sm sm:text-2xl   text-slate-500 hover:text-teal-300 rounded-lg" onChange={handleSelectedAndInitial} onBlur={handleDropdownSearch}>
-          <option value="">Selecione item...</option>
-          <option className="" value="produtos" onClick={handleFilter}>
-            Produtos
-          </option>
-          <option value="roupas" onClick={handleFilter}>
-            Roupas
-          </option>
-          <option  value="eletronicos" onClick={handleFilter}>
-            Eletronicos
-          </option>
-        </select> : null}
-        
+        {openFilter ? (
+          <select
+            className="appearance-none m-auto col-start-4 bg-slate-100 text-sm sm:text-2xl   text-slate-500 hover:text-teal-300 rounded-lg"
+            onChange={handleSelectedAndInitial}
+            onBlur={handleDropdownSearch}
+          >
+            <option value="">Selecione item...</option>
+            <option className="" value="produtos" onClick={handleFilter}>
+              Produtos
+            </option>
+            <option value="roupas" onClick={handleFilter}>
+              Roupas
+            </option>
+            <option value="eletronicos" onClick={handleFilter}>
+              Eletronicos
+            </option>
+          </select>
+        ) : null}
       </div>
     </nav>
   );

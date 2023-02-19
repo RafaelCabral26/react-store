@@ -55,25 +55,38 @@ function Product(props) {
  
  return (
 
-  <div className="shrink-0 w-24 sm:w-auto sm:h-96">
-      <div className="text-slate-500 border-2 rounded-lg my-10 md:my-32 group">
-        <div className="">
-          <img src={props.produto.photo} alt="product image" />
-        </div>
-        <p className="text-slate-600">{props.produto.name}</p>
-        <p className="text-slate-600">
-          <span className="text-slate-600">R$</span>{props.produto.price} </p>
-        <a href="#" className="hidden group-hover:block">
-          <div className="text-slate-400">{props.produto.description}</div>
-        </a>
-      </div>
+  // <div className="shrink-0 w-24 sm:w-auto my-10 m-2 hover:shadow-2xl">
+  //     <div className="text-slate-500 border-2 rounded-lg group">
+  //       <div className="h-64">
+  //         <img src={props.produto.photo} alt="product image" />
+  //       </div>
+  //       <p className="text-slate-600 py-1 ">{props.produto.name}</p>
+  //       <p className="text-slate-600 py-1 ">
+  //         <span className="text-slate-600">R$</span>{props.produto.price} </p>
+  //       <a href="#" className="hidden group-hover:block">
+  //         <div className="text-slate-400">{props.produto.description}</div>
+  //       </a>
+  //     </div>
+  //   </div>
+  <div className=" w-72 bg-base-100 shadow-xl m-2">
+  <figure><img src="https://cdn.pixabay.com/photo/2014/04/05/09/30/tablet-314153_960_720.png" alt="Shoes" /></figure>
+  <div className="card-body p-2 pt-3 flex flex-row h-24" >
+    <div className="card-actions justify-around content-center ">
+    <span className="card-title">{props.produto.name}</span>
+    <div>
+    <a className="ml-12">R${props.produto.price}</a>
+    <img src="src/assets/cart-svgrepo-com.svg" alt="" className="w-10" />
     </div>
+    </div>
+  </div>
+      <button className="btn btn-primary ml-40 mb-4">R${props.produto.price}</button>
+</div>
   );
 }
 
 function Products(props) {
   return (
-    <section className="flex flex-wrap justify-center mx-50 sm:mx-50 xl:mx-96 gap-4">
+    <section className="flex flex-wrap justify-center my-20 xl:mx-96">
       { props.produtos.map((produto) => {
     return <Product key={produto.name} produto={produto}></Product>
   })}
