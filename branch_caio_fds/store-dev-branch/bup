@@ -1,3 +1,0 @@
-from flask import Flask, render_template, request, url_for, flash, redirect
-le:///home/mei/Dev/store-dev-branch/react-store-dangerbranch/vtodos/app.py
-file:///home/mei/Dev/store-dev-branch/react-store-dangerbranch/vtodos/bend-draft.py

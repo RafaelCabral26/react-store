@@ -13,12 +13,6 @@ dist-ssr
 *.local
 .env
 # Editor directories and files
-/vtodos
-/store_env/backend/bin
-/store_env/backend/include
-/store_env/backend/lib
-/store_env/backend/lib64
-/store_env/backend/pyvenv.cfg  
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -34,10 +28,12 @@ bin/
 *.so
 __pycache__/
 *.py[cod]
+.pyenv.cfg
 *$py.class
 .Python
 build/
 develop-eggs/
+include/python3.11/
 dist/
 downloads/
 eggs/

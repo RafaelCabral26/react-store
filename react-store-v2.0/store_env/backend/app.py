@@ -61,29 +61,28 @@ def create_client():
 products=db.products
 @app.route('/create_product/', methods=('GET', 'POST')) 
 def create_product():
-            
+            request_data = request.get_json()
             if request.method == 'POST':
-                name = request.form['name']
-                price = request.form['[price]']
-                description = request.form['description']
-                group = request.form['group']
-                photo = request.form['photo']
+                name = request_data['name']
+                price = request_data['price']
+                description = request_data['description']
+                group = request_data['group']
+                photo = request_data['photo']
     
                 if not name:
-                    flash('name is required!')
+                    return ('name is required!')
                 elif not price:
-                    flash('price is required!')
+                    return ('price is required!')
                 elif not description:
-                    flash('description is required!')
+                    return ('description is required!')
                 elif not group:
-                    flash('Categoria is required!')
+                    return ('Categoria is required!')
                 elif not photo:
-                    flash('photo is required!')
+                    return ('photo is required!')
                 else:
                       products.insert_one({'name': name, 'price': price,
                      'description': description, 'group': group,
                       'photo': photo})
-                      flash('Product created successfully!')
             return 'produto adicionado'
             
 

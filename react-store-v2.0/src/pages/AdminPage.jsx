@@ -4,10 +4,11 @@ import http from "../services/axios";
 export function AdminPage() {
   const [crudPages, setCrudPages] = React.useState("create");
   const [productState, setProductState] = React.useState({
-    nome: "",
-    preço: "",
-    descricao: "",
-    categoria: "",
+    name: "",
+    price: "",
+    description: "",
+    group: "",
+    photo:"url"
   });
   const handleProductData = (e) => {
     const name = e.target.name;
@@ -20,6 +21,7 @@ export function AdminPage() {
   function submitProductData(e) {
     e.preventDefault()
     const newProduct = JSON.stringify(productState);
+    console.log(newProduct)
     http.post("/create_product/", newProduct)
     .then(res => {
         console.log(res.data)
@@ -44,14 +46,14 @@ export function AdminPage() {
         </aside>
         {crudPages == "create" ? (
           <form className="my-28 col-start-6 col-span-5 ml-4">
-            <select className="select select-bordered w-full max-w-xs" defaultValue={"categoria"} name="categoria" onChange={handleProductData}>
-              <option disabled value={"categoria"}>
+            <select className="select select-bordered w-full max-w-xs" defaultValue={"group"} name="group" onChange={handleProductData}>
+              <option disabled value={"group"}>
                 Categorias
               </option>
-              <option name="categoria" value="eletronicos">
+              <option name="group" value="eletronicos">
                 Eletrônicos
               </option>
-              <option name="categoria" value="roupas">
+              <option name="group" value="roupas">
                 Roupas
               </option>
             </select>
@@ -59,18 +61,18 @@ export function AdminPage() {
               <label className="label">
                 <span className="label-text">Nome do produto</span>
               </label>
-              <input type="text" placeholder="Nome..." name="nome" className="input input-bordered w-full max-w-xs" onChange={handleProductData} />
+              <input type="text" placeholder="Nome..." name="name" className="input input-bordered w-full max-w-xs" onChange={handleProductData} />
             </div>
             <div className="form-control w-full max-w-xs">
               <label className="label">
                 <span className="label-text">Preço</span>
               </label>
               <label className="label input-group">
-                <input type="number" min="0.00" max="10000.00" step="0.01" placeholder="Preço..." name="preço" className="input input-bordered w-full max-w-xs" onChange={handleProductData} />
+                <input type="number" min="0.00" max="10000.00" step="0.01" placeholder="Preço..." name="price" className="input input-bordered w-full max-w-xs" onChange={handleProductData} />
                 <span>R$</span>
               </label>
             </div>
-            <textarea placeholder="Descrição do Produto" name="descricao" className="textarea textarea-bordered textarea-md my-4  w-full max-w-xs" onChange={handleProductData}></textarea>
+            <textarea placeholder="Descrição do Produto" name="description" className="textarea textarea-bordered textarea-md my-4  w-full max-w-xs" onChange={handleProductData}></textarea>
             <div className="form-control m-0 w-full max-w-xs">
             <button type="submit" className="btn btn-primary" onClick={submitProductData}>Criar Produto</button>
             </div>
