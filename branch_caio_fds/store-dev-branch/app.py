@@ -4,10 +4,10 @@ import os
 key = os.urandom(24).hex()
 import datetime
 from flask_cors import CORS, cross_origin
-# mongo = os.environ['MONGO_URI']
+mongo = os.environ['MONGO_URI']
 app = Flask(__name__)
 app.config['SECRET_KEY'] = key
-client = MongoClient("mongodb+srv://todos:osO5eYspfv26Ffl6@cluster0.3iwfkdp.mongodb.net/vendinha")
+client = MongoClient(mongo)
 db = client.vendinha
 users = db.users
 app.run(debug=True)
@@ -57,12 +57,12 @@ def create_client():
 
 @app.route('/create_product/', methods=('GET', 'POST')) 
 def create_product():
-            
+            request_data = request.get_json()
             if request.method == 'POST':
-                nome = request.data['nome']
-                preco = request.data['preco']
-                descricao = request.data['descricao']
-                categoria = request.data['categoria']
+                nome = request_data['nome']
+                preco = request_data['preco']
+                descricao = request_data['descricao']
+                categoria = request_data['categoria']
     
                 if not nome:
                     flash('Nome is required!')
@@ -72,12 +72,9 @@ def create_product():
                     flash('Descricao is required!')
                 elif not categoria:
                     flash('Categoria is required!')
-                elif not imagem:
-                    flash('Imagem is required!')
                 else:
                 
                     products.insert_one({'nome': nome, 'preco': preco, 'descricao': descricao, 'categoria': categoria})
     
-                    return redirect(url_for('index'))
+                    return "Produto Criado"
             
-            return render_template('create_product.html')

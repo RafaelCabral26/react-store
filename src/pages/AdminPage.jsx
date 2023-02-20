@@ -5,7 +5,7 @@ export function AdminPage() {
   const [crudPages, setCrudPages] = React.useState("create");
   const [productState, setProductState] = React.useState({
     nome: "",
-    preço: "",
+    preco: "",
     descricao: "",
     categoria: "",
   });
@@ -20,6 +20,7 @@ export function AdminPage() {
   function submitProductData(e) {
     e.preventDefault()
     const newProduct = JSON.stringify(productState);
+    console.log(newProduct);
     http.post("/create_product/", newProduct)
     .then(res => {
         console.log(res.data)
@@ -29,11 +30,16 @@ export function AdminPage() {
     <div>
       <NavBar></NavBar>
       <div className=" grid grid-cols-12 mx-auto border">
-        <aside className="flex h-screen w-40 border-r-2">
+        <aside className="flex h-screen w-40 border-r-2 dropdown">
           <div className="menu w-full my-10">
-            <button className="btn btn-primary rounded-md my-1" onClick={() => setCrudPages("create")}>
+            {/* <button className="btn btn-primary rounded-md my-1" onClick={() => setCrudPages("create")}>
               Criar
-            </button>
+            </button> */}
+            <div className="group-focus:">
+              <button className="btn btn-primary rounded-md my-1 group">Produtos</button> 
+              <div className="hidden group-focus:block">Teste1</div>
+              <div className="hidden focus:block">Teste2</div>
+            </div>
             <button className="btn btn-primary rounded-md my-1" onClick={() => setCrudPages("update")}>
               Atualizar
             </button>
@@ -66,7 +72,7 @@ export function AdminPage() {
                 <span className="label-text">Preço</span>
               </label>
               <label className="label input-group">
-                <input type="number" min="0.00" max="10000.00" step="0.01" placeholder="Preço..." name="preço" className="input input-bordered w-full max-w-xs" onChange={handleProductData} />
+                <input type="number" min="0.00" max="10000.00" step="0.01" placeholder="Preço..." name="preco" className="input input-bordered w-full max-w-xs" onChange={handleProductData} />
                 <span>R$</span>
               </label>
             </div>
