@@ -43,7 +43,7 @@ export function AdminPage() {
       .catch((err) => {
         console.log(err);
       });
-  });
+  },[]);
   return (
     <div>
       <NavBar></NavBar>
