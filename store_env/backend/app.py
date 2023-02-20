@@ -7,8 +7,9 @@ from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = key
-client = MongoClient("mongodb+srv://:@cluster0.3iwfkdp.mongodb.net/?retryWrites=true&w=majority")
-db = client.vendinpip3 
+client = MongoClient(
+    "mongodb+srv://todos:osO5eYspfv26Ffl6@cluster0.3iwfkdp.mongodb.net/?retryWrites=true&w=majority")
+db = client.vendinha
 users = db.users
 app.run(debug=True)
 CORS(app)
@@ -16,6 +17,7 @@ CORS(app)
 @app.route('/teste/')
 def success():
    return 'welcome meu mininu'
+
 
 
 @app.route('/create_client/', methods=('GET', 'POST'))
@@ -54,5 +56,35 @@ def create_client():
                                              'password': password, 'telefone': telefone, 'data_nasc': data_nasc,
                                                'perfil': perfil, 'time_stamp': time_stamp})
                 return "Cadastrado!"
+
+
+products=db.products
+@app.route('/create_product/', methods=('GET', 'POST')) 
+def create_product():
+            
+            if request.method == 'POST':
+                name = request.form['name']
+                price = request.form['[price]']
+                description = request.form['description']
+                group = request.form['group']
+                photo = request.form['photo']
+    
+                if not name:
+                    flash('name is required!')
+                elif not price:
+                    flash('price is required!')
+                elif not description:
+                    flash('description is required!')
+                elif not group:
+                    flash('Categoria is required!')
+                elif not photo:
+                    flash('photo is required!')
+                else:
+                      products.insert_one({'name': name, 'price': price,
+                     'description': description, 'group': group,
+                      'photo': photo})
+                      flash('Product created successfully!')
+            return 'produto adicionado'
+            
 
             
