@@ -4,7 +4,7 @@ import os
 key = os.urandom(24).hex()
 import datetime
 from flask_cors import CORS, cross_origin
-
+from bson.json_util import dumps
 app = Flask(__name__)
 app.config['SECRET_KEY'] = key
 client = MongoClient(
@@ -85,5 +85,9 @@ def create_product():
                       'photo': photo})
             return 'produto adicionado'
             
-
-            
+@app.route('/products_list', methods=('GET', 'POST'))
+def products_list():
+    prod = list(products.find().limit(10))
+    json_data = dumps(prod)
+    print(json_data)
+    return json_data

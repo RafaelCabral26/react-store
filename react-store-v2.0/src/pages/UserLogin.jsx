@@ -50,7 +50,7 @@ const submitUserData = (e) => {
         <div className="max-w-sm m-auto ">
         
   {registerModal ? 
-  <div className="flex justify-center " >
+  <div className="flex justify-center" >
      <form  className="bg-white flex flex-col border-2 rounded-xl my-20 w-96 shadow-2xl relative" >
   <div className="flex flex-col m-auto p-10" >
     <h1 className="self-center text-slate-500 text-3xl">Cadastro</h1>

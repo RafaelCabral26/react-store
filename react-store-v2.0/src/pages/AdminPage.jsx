@@ -1,14 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../components/Navbar";
 import http from "../services/axios";
+import { Sidebar, Breadcrumb } from "flowbite-react";
+import BreadcrumbItem from "flowbite-react/lib/esm/components/Breadcrumb/BreadcrumbItem";
 export function AdminPage() {
   const [crudPages, setCrudPages] = React.useState("create");
+  const [listOfProducts, setListOfProducts] = React.useState({});
   const [productState, setProductState] = React.useState({
     name: "",
     price: "",
     description: "",
     group: "",
-    photo:"url"
+    photo: "url",
   });
   const handleProductData = (e) => {
     const name = e.target.name;
@@ -19,33 +22,57 @@ export function AdminPage() {
     });
   };
   function submitProductData(e) {
-    e.preventDefault()
+    e.preventDefault();
     const newProduct = JSON.stringify(productState);
-    console.log(newProduct)
-    http.post("/create_product/", newProduct)
-    .then(res => {
-        console.log(res.data)
-    }).catch(err => {console.log(err);})
+    console.log(newProduct);
+    http
+      .post("/create_product/", newProduct)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
+  useEffect(() => {
+    http
+      .get("/products_list")
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
   return (
     <div>
       <NavBar></NavBar>
-      <div className=" grid grid-cols-12 mx-auto border">
-        <aside className="flex h-screen w-40 border-r-2">
-          <div className="menu w-full my-10">
-            <button className="btn btn-primary rounded-md my-1" onClick={() => setCrudPages("create")}>
-              Criar
-            </button>
-            <button className="btn btn-primary rounded-md my-1" onClick={() => setCrudPages("update")}>
-              Atualizar
-            </button>
-            <button className="btn btn-primary rounded-md my-1" onClick={() => setCrudPages("delete")}>
-              Deletar
-            </button>
-          </div>
-        </aside>
+      <div className="grid grid-cols-12 mx-auto border container">
+        <Sidebar className="col-span-2 ">
+          <Sidebar.Items className="h-full">
+            <Sidebar.ItemGroup className="">
+              <Sidebar.Collapse label="Produtos" className="justify-center btn-field my-2">
+                <button className="btn btn-primary rounded-md my-1 w-full " onClick={() => setCrudPages("create")}>
+                  Criar
+                </button>
+                <button className="btn btn-primary rounded-md my-1 w-full" onClick={() => setCrudPages("list")}>
+                  Listar
+                </button>
+              </Sidebar.Collapse>
+              <Sidebar.Collapse label="Clientes" className="justify-center btn-field my-2"></Sidebar.Collapse>
+              <Sidebar.Collapse label="Pedidos" className="justify-center btn-field my-2"></Sidebar.Collapse>
+            </Sidebar.ItemGroup>
+          </Sidebar.Items>
+        </Sidebar>
+
         {crudPages == "create" ? (
-          <form className="my-28 col-start-6 col-span-5 ml-4">
+          <form className="my-28 col-start-5 col-span-5 border-2 rounded-lg mx-auto p-6 shadow-2xl">
+            <Breadcrumb className="my-2 text-slate-500">
+              Produtos
+              <Breadcrumb.Item>
+                <span className="text-base"> Criar</span>
+              </Breadcrumb.Item>
+            </Breadcrumb>
             <select className="select select-bordered w-full max-w-xs" defaultValue={"group"} name="group" onChange={handleProductData}>
               <option disabled value={"group"}>
                 Categorias
@@ -74,14 +101,14 @@ export function AdminPage() {
             </div>
             <textarea placeholder="Descrição do Produto" name="description" className="textarea textarea-bordered textarea-md my-4  w-full max-w-xs" onChange={handleProductData}></textarea>
             <div className="form-control m-0 w-full max-w-xs">
-            <button type="submit" className="btn btn-primary" onClick={submitProductData}>Criar Produto</button>
+              <button type="submit" className="btn btn-primary" onClick={submitProductData}>
+                Criar Produto
+              </button>
             </div>
           </form>
-        ) : crudPages == "update" ? (
-          <div>Update</div>
-        ) : (
-          <div>Delete</div>
-        )}
+        ) : crudPages == "list" ? (
+          <div>Listar</div>
+        ) : null}
       </div>
     </div>
   );
