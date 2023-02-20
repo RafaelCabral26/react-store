@@ -1,4 +1,5 @@
-import React from "react";
+
+  import React from "react";
 import http from '../services/axios'
 export function UserRegister() {
 const [userData, setData] = React.useState({

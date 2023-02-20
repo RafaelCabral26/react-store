@@ -3,6 +3,38 @@ import NavBar from "../components/Navbar";
 export function AdminPage() {
 
 
+
+    const [userData, setData] = React.useState({
+        name:"",
+        price:"",
+        description:"",
+        discount:"",
+        photo:"",
+        group:"",
+    })
+
+    const handleData = (e) => {
+        const name = e.target.name
+        const value = e.target.value
+        setData((previousData) => {
+            return { ...previousData, [name]:value}
+        })
+        
+
+    const submitProductData = (e) => {
+        e.preventDefault()
+        const prod = JSON.stringify(prodData)
+        http.post("/create_client/", user)
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+
+
     return (
         <div>
             <NavBar></NavBar>
