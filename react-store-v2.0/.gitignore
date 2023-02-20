@@ -28,6 +28,9 @@ bin/
 *.so
 __pycache__/
 *.py[cod]
+.pyenv.cfg/
+pyenv.cfg/
+pyenv.cfg/
 .pyenv.cfg
 *$py.class
 .Python
