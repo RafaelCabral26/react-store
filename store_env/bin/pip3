@@ -1,4 +1,4 @@
-#!/home/cabral/Projetos/Python/vtodos/bin/python3
+#!/home/mei/Dev/react-store/store_env/bin/python3
 # -*- coding: utf-8 -*-
 import re
 import sys

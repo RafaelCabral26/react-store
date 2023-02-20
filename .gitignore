@@ -12,7 +12,14 @@ dist
 dist-ssr
 *.local
 
+
 # Editor directories and files
+/vtodos
+/store_env/backend/bin
+/store_env/backend/include
+/store_env/backend/lib
+/store_env/backend/lib64
+/store_env/backend/pyvenv.cfg  
 .vscode/*
 !.vscode/extensions.json
 .idea
