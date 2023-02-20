@@ -5,7 +5,7 @@ function NavBar(props) {
   const [selected, setSelected] = React.useState("produtos");
   const [initialProductState] = React.useState(props.produtos);
   const [openFilter, setOpenFilter] = React.useState(false);
-  const [perfil, setPerfil] = React.useState(0);
+  const [perfil, setPerfil] = React.useState(1);
 
   const handleQuery = (e) => {
     if (e.target.value == ""){
@@ -47,6 +47,7 @@ function NavBar(props) {
 
   return (
     <nav>
+      
       <div className="grid bg-white  grid-flow-col-dense grid-cols-12 justify-around    h-16 text-center font-mono text-2x font-extrabold border-b-4 border-x-2 ">
         <div className=" col-start-1 sm:col-start-2 col-span-2 mt-2 w-40 sm:w-96">
           <img src="src/assets/e-store-logo.svg" alt="logo e-cart" className="w-40" />

@@ -11,8 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
-
-
+.env
 # Editor directories and files
 /vtodos
 /store_env/backend/bin
@@ -31,6 +30,7 @@ dist-ssr
 *.sw?
 lib/
 lib64/
+bin/
 *.so
 __pycache__/
 *.py[cod]
