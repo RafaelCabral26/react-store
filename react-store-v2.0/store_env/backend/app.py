@@ -1,10 +1,21 @@
 from flask import Flask, render_template, request, url_for, flash, redirect
 from pymongo import MongoClient
 import os
-key = os.urandom(24).hex()
 import datetime
 from flask_cors import CORS, cross_origin
 from bson.json_util import dumps
+import datetime
+import flask_login
+from flask_wtf import FlaskForm
+from wtforms import StringField
+from wtforms.validators import DataRequired
+
+
+
+
+#bd connection
+
+key = os.urandom(24).hex()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = key
 client = MongoClient(
@@ -14,13 +25,92 @@ users = db.users
 app.run(debug=True)
 CORS(app)
 
+
+
+
+
+
+
+
+
+
+#### Login Manager ####
+
+class User(flask_login.UserMixin):
+    def __init__(self, id, username, password, nome, foto, cpf, email, 
+                 telefone, data_nasc,perfil):
+            super().__init__()
+            self.id = id  
+            self.username = username
+            self.password = password
+            self.nome = nome
+            self.foto = foto
+            self.cpf = cpf 
+            self.email = email 
+            self.telefone = telefone
+            self.data_nasc = data_nasc
+            self.perfil = perfil
+    def get(id):
+        'mongodb first match with id'
+        user = users.find_one({'_id': ObjectId(id)})
+        if user:
+            return User(id=str(user['_id']), username=user['username'], 
+                        password=user['password'],nome=user['nome'], 
+                        foto=user['foto'],cpf=user['cpf'],email=user['email'], 
+                        telefone=user['telefone'],data_nasc=user['data_nasc'], 
+                        perfil=user['perfil'])
+        return None
+    def get_ByMail(email):
+        'mongodb first match with email'
+        user = user.find_one({'email': email})
+        if user:
+            return User(id=str(user['_id']), username=user['username'], 
+                        password=user['password'],nome=user['nome'], 
+                        foto=user['foto'],cpf=user['cpf'],email=user['email'], 
+                        telefone=user['telefone'],data_nasc=user['data_nasc'], 
+                        perfil=user['perfil'])
+
+login = flask_login.login_manager(app)
+
+class LoginForm(FlaskForm):
+     username = StringField('email', validators=[DataRequired()])
+     password = StringField('password', validators=[DataRequired()])
+     remember = BooleanField('remember me')
+     submit = SubmitField('Sign In')
+
+@flask_login.login_manager.user_loader
+def user_loader(user_id):
+    return User.get(user_id)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.get_ByMail(form.username.data)
+        if user and user.password == form.password.data:
+            flask_login.login_user(user)
+            flash('Logged in successfully.')
+            next = request.args.get('next')
+            return redirect(next or url_for('index'))
+        else:
+            flash('Incorrect username or password.')
+    return  render_template('login.html', form=form)
+
+
+@app.route('/logout')
+def logout():
+    flask_login.logout_user()
+    return redirect(url_for('index'))
+#### end Login Manager #### 
+
 @app.route('/teste/')
 def success():
    return 'welcome meu mininu'
 
 
 
-@app.route('/create_client/', methods=('GET', 'POST'))
+@app.route('/register', methods=('GET', 'POST'))
 def create_client():
             request_data = request.get_json()
 
