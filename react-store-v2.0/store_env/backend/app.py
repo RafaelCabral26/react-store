@@ -35,56 +35,56 @@ CORS(app)
 
 
 #### Login Manager ####
-
-class User(flask_login.UserMixin):
-    def __init__(self, id, username, password, nome, foto, cpf, email, 
-                 telefone, data_nasc,perfil):
-            super().__init__()
-            self.id = id  
-            self.username = username
-            self.password = password
-            self.nome = nome
-            self.foto = foto
-            self.cpf = cpf 
-            self.email = email 
-            self.telefone = telefone
-            self.data_nasc = data_nasc
-            self.perfil = perfil
-    def get(id):
-        'mongodb first match with id'
-        user = users.find_one({'_id': ObjectId(id)})
-        if user:
-            return User(id=str(user['_id']), username=user['username'], 
-                        password=user['password'],nome=user['nome'], 
-                        foto=user['foto'],cpf=user['cpf'],email=user['email'], 
-                        telefone=user['telefone'],data_nasc=user['data_nasc'], 
-                        perfil=user['perfil'])
-        return None
-    def get_ByMail(email):
-        'mongodb first match with email'
-        user = user.find_one({'email': email})
-        if user:
-            return User(id=str(user['_id']), username=user['username'], 
-                        password=user['password'],nome=user['nome'], 
-                        foto=user['foto'],cpf=user['cpf'],email=user['email'], 
-                        telefone=user['telefone'],data_nasc=user['data_nasc'], 
-                        perfil=user['perfil'])
-
-login = flask_login.login_manager(app)
-
-class LoginForm(FlaskForm):
-     username = StringField('email', validators=[DataRequired()])
-     password = StringField('password', validators=[DataRequired()])
-     remember = BooleanField('remember me')
-     submit = SubmitField('Sign In')
-
-@flask_login.login_manager.user_loader
-def user_loader(user_id):
-    return User.get(user_id)
-
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    app = Flask(__name__)
+    @flask_login.LoginManager.user_loader
+    def user_loader(user_id):
+        return User.get(user_id)
+    
+    login = flask_login.LoginManager.init_app(app)
+    class LoginForm(FlaskForm):
+        username = StringField('email', validators=[DataRequired()])
+        password = StringField('password', validators=[DataRequired()])
+        remember = BooleanField('remember me')
+        submit =   SubmitField('Sign In')
+    
+    form = LoginForm()
+    
+    class User(flask_login.UserMixin):
+        def __init__(self, id, username, password, nome, foto, cpf, email, 
+                    telefone, data_nasc,perfil):
+                super().__init__()
+                self.id = id  
+                self.username = username
+                self.password = password
+                self.nome = nome
+                self.foto = foto
+                self.cpf = cpf 
+                self.email = email 
+                self.telefone = telefone
+                self.data_nasc = data_nasc
+                self.perfil = perfil
+        def get(id):
+            'mongodb first match with id'
+            user = users.find_one({'_id': ObjectId(id)})
+            if user:
+                return User(id=str(user['_id']), username=user['username'], 
+                            password=user['password'],nome=user['nome'], 
+                            foto=user['foto'],cpf=user['cpf'],email=user['email'], 
+                            telefone=user['telefone'],data_nasc=user['data_nasc'], 
+                            perfil=user['perfil'])
+            return None
+        def get_ByMail(email):
+            'mongodb first match with email'
+            user = user.find_one({'email': email})
+            if user:
+                return User(id=str(user['_id']), username=user['username'], 
+                            password=user['password'],nome=user['nome'], 
+                            foto=user['foto'],cpf=user['cpf'],email=user['email'], 
+                            telefone=user['telefone'],data_nasc=user['data_nasc'], 
+                            perfil=user['perfil'])
+    app = Flask(__name__)
     form = LoginForm()
     if form.validate_on_submit():
         user = User.get_ByMail(form.username.data)
@@ -95,7 +95,19 @@ def login():
             return redirect(next or url_for('index'))
         else:
             flash('Incorrect username or password.')
-    return  render_template('login.html', form=form)
+        return  render_template('login.html', form=form)
+
+
+
+
+
+
+
+
+
+    #@flask_login.LoginManager.request_loader
+
+
 
 
 @app.route('/logout')
@@ -146,6 +158,9 @@ def create_client():
                                              'password': password, 'telefone': telefone, 'data_nasc': data_nasc,
                                                'perfil': perfil, 'time_stamp': time_stamp})
                 return "Cadastrado!"
+
+
+
 
 
 products=db.products
