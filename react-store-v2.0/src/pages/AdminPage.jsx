@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import NavBar from "../components/Navbar";
+import { ProductsModal } from "../components/ProductsModal";
 import http from "../services/axios";
-import { Sidebar, Breadcrumb } from "flowbite-react";
-import BreadcrumbItem from "flowbite-react/lib/esm/components/Breadcrumb/BreadcrumbItem";
+import { Sidebar, Breadcrumb, Modal } from "flowbite-react";
 export function AdminPage() {
   const [crudPages, setCrudPages] = React.useState("create");
-  const [editProductsModal, setEditProductsModal] = React.useState(false)
+  const [editProductsModal, setEditProductsModal] = React.useState({});
   const [listOfProducts, setListOfProducts] = React.useState([]);
   const [productState, setProductState] = React.useState({
     name: "",
@@ -39,18 +39,26 @@ export function AdminPage() {
     http
       .get("/products_list")
       .then((res) => {
-        console.log(res.data);
+        console.log("Render useEffect products_list request")
         setListOfProducts(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
-  function handleEditProductsModal(e, id) {
-    setEditProductsModal(!editProductsModal)
+  function handleEditProductsModal(id) {
+    const selected = listOfProducts.filter((ele) => {
+      if (ele._id.$oid == id) {
+        return ele;
+      }
+    });
+    setEditProductsModal({ show: !editProductsModal.show, product: selected[0] });
   }
+  useEffect(() => {
+    console.log("Opa", editProductsModal);
+  }, [editProductsModal]);
   return (
-    <div>
+    <div className="relative">
       <NavBar></NavBar>
       <div className="grid grid-cols-12 mx-auto border container">
         <Sidebar className="col-span-2 ">
@@ -131,16 +139,27 @@ export function AdminPage() {
                       <th key={e.group}>{e.group}</th>
                       <th key={e.price}>{e.price}</th>
                       <th key={e.description}>{e.description}</th>
-                      <th key={(e.name +"1")}><button className="link text-teal-400">Editar</button></th>
-                      {console.log(e._id.$oid)}
+                      <th key={e.name + "1"}>
+                        <button
+                          className="link text-teal-400"
+                          onClick={() => {
+                            handleEditProductsModal(e._id.$oid);
+                          }}
+                        >
+                          Editar
+                        </button>
+                      </th>
                     </tr>
                   );
                 })}
-               
               </tbody>
             </table>
           </div>
         ) : null}
+        {editProductsModal.show == true ?
+          <ProductsModal></ProductsModal>
+          :null
+        }
       </div>
     </div>
   );

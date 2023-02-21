@@ -4,16 +4,18 @@ import http from "../services/axios"
 export function UserLogin() {
   const [registerModal, setRegisterModal] = React.useState(false)
   const [userData, setData] = React.useState({
-    nome:"",
+    name:"",
     cpf:"",
     email:"",
     password:"",
     telefone:"",
     data_nasc:"",
+    photo:""
   })
 
-function submitLogin() {
-    let dataLogin = JSON.stringify({email:userData.email, password:userData.password})
+function submitLogin(e) {
+  e.preventDefault()  
+  let dataLogin = JSON.stringify({email:userData.email, password:userData.password})
     http.post("/login",dataLogin).then(res => {
       console.log(res.data)
     }).catch(err => {
@@ -37,7 +39,7 @@ const submitUserData = (e) => {
         alert("Senhas digitadas incompatíveis!")
     }
     const user = JSON.stringify(userData)
-    http.post("/create_client/", user)
+    http.post("/register", user)
     .then(res => {
         console.log(res.data);
     })
@@ -56,8 +58,8 @@ const submitUserData = (e) => {
     <h1 className="self-center text-slate-500 text-3xl">Cadastro</h1>
     <hr/>
 
-    <label className="m-1" htmlFor="nome">Nome</label>
-    <input className="input-field" type="text" placeholder="Nome" name="nome" id="nome"  onChange={handleData} autoFocus required/>
+    <label className="m-1" htmlFor="name">Nome</label>
+    <input className="input-field" type="text" placeholder="Nome" name="name" id="name"  onChange={handleData} autoFocus required/>
 
     <label className="m-1" htmlFor="email">Email</label>
     <input className="input-field" type="text" placeholder="email@email.com" name="email" id="email"  onChange={handleData} required/>
