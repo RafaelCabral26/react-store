@@ -87,7 +87,7 @@ def create_product():
             
 @app.route('/products_list', methods=('GET', 'POST'))
 def products_list():
-    prod = list(products.find().limit(10))
+    prod = list(products.find())
     json_data = dumps(prod)
     print(json_data)
     return json_data

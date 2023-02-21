@@ -5,7 +5,8 @@ import { Sidebar, Breadcrumb } from "flowbite-react";
 import BreadcrumbItem from "flowbite-react/lib/esm/components/Breadcrumb/BreadcrumbItem";
 export function AdminPage() {
   const [crudPages, setCrudPages] = React.useState("create");
-  const [listOfProducts, setListOfProducts] = React.useState({});
+  const [editProductsModal, setEditProductsModal] = React.useState(false)
+  const [listOfProducts, setListOfProducts] = React.useState([]);
   const [productState, setProductState] = React.useState({
     name: "",
     price: "",
@@ -38,12 +39,16 @@ export function AdminPage() {
     http
       .get("/products_list")
       .then((res) => {
-        console.log(res);
+        console.log(res.data);
+        setListOfProducts(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
-  },[]);
+  }, []);
+  function handleEditProductsModal(e, id) {
+    setEditProductsModal(!editProductsModal)
+  }
   return (
     <div>
       <NavBar></NavBar>
@@ -107,7 +112,34 @@ export function AdminPage() {
             </div>
           </form>
         ) : crudPages == "list" ? (
-          <div>Listar</div>
+          <div className="col-start-5 my-20 border">
+            <table className="table w-full h- m-auto">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Categoria</th>
+                  <th>Preço</th>
+                  <th>Descrição</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                {listOfProducts.map((e) => {
+                  return (
+                    <tr key={e.name}>
+                      <th key={e.name}>{e.name}</th>
+                      <th key={e.group}>{e.group}</th>
+                      <th key={e.price}>{e.price}</th>
+                      <th key={e.description}>{e.description}</th>
+                      <th key={(e.name +"1")}><button className="link text-teal-400">Editar</button></th>
+                      {console.log(e._id.$oid)}
+                    </tr>
+                  );
+                })}
+               
+              </tbody>
+            </table>
+          </div>
         ) : null}
       </div>
     </div>

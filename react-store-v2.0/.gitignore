@@ -27,13 +27,14 @@ lib64/*
 **/bin
 **/include
 **/lib64
-**/store_env/pyenv.cfg
+**/store_env/pyvenv.cfg
 *.so
-store_env/backend/pyvenv.cfgg
+backend/pyvenv.cfg
 **/pyenv.cfg
 __pycache__/
 *.py[cod]
-
+pyvenv.cfg/
+**/pyvenv.cfg
 *$py.class
 .Python
 build/
