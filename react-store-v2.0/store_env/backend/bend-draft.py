@@ -7,7 +7,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
 
-login_manager = LoginManager()
+login_manager = flask_login.LoginManager()
 
 agr=datetime.datetime.now()
 
@@ -57,12 +57,13 @@ class User(flask_login.UserMixin):
                         perfil=user['perfil'])
         return None
 
-login_manager.init_app(app)
+login = login_manager(app)
 
 class LoginForm(FlaskForm):
      username = StringField('username', validators=[DataRequired()])
      password = StringField('password', validators=[DataRequired()])
      remember = BooleanField('remember me')
+     submit = SubmitField('Sign In')
 
 @login_manager.user_loader
 def user_loader(user_id):
@@ -82,6 +83,13 @@ def login():
         else:
             flash('Incorrect username or password.')
     return  render_template('login.html', form=form)
+
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
 
 ## falta remember me
 #teste:
