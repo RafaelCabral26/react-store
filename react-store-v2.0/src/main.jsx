@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Home } from "./pages/Home";
 import "./index.css";
-import { UserRegister } from "./pages/userRegister";
+import { UserRegister } from "./pages/UserRegister";
 import { UserLogin } from "./pages/UserLogin";
 import { AdminPage } from "./pages/AdminPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";

@@ -9,7 +9,7 @@ import flask_login
 from flask_wtf import FlaskForm
 from wtforms import StringField
 from wtforms.validators import DataRequired
-
+import json
 
 
 
@@ -22,121 +22,24 @@ client = MongoClient(
     "mongodb+srv://todos:osO5eYspfv26Ffl6@cluster0.3iwfkdp.mongodb.net/?retryWrites=true&w=majority")
 db = client.vendinha
 users = db.users
-app.run(debug=True)
+#app.run(debug=True)
+#liga debug na chamada do flask. doc flask run --help
 CORS(app)
 
-
-
-
-
-
-
-
-
-
-#### Login Manager ####
-'''
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    app = Flask(__name__)
-    @flask_login.LoginManager.user_loader
-    def user_loader(user_id):
-        return User.get(user_id)
-    
-    login = flask_login.LoginManager.init_app(app)
-    class LoginForm(FlaskForm):
-        username = StringField('email', validators=[DataRequired()])
-        password = StringField('password', validators=[DataRequired()])
-        remember = BooleanField('remember me')
-        submit =   SubmitField('Sign In')
-    
-    form = LoginForm()
-    
-    class User(flask_login.UserMixin):
+class User(flask_login.UserMixin):
         def __init__(self, id, username, password, nome, foto, cpf, email, 
                     telefone, data_nasc,perfil):
                 super().__init__()
-                self.id = id  
-                self.username = username
-                self.password = password
-                self.nome = nome
-                self.foto = foto
-                self.cpf = cpf 
-                self.email = email 
-                self.telefone = telefone
-                self.data_nasc = data_nasc
-                self.perfil = perfil
-        def get(id):
-            'mongodb first match with id'
-            user = users.find_one({'_id': id}) #.Oid
-            if user:
-                return User(id=str(user['id']), username=user['username'], 
-                            password=user['password'],nome=user['nome'], 
-                            foto=user['foto'],cpf=user['cpf'],email=user['email'], 
-                            telefone=user['telefone'],data_nasc=user['data_nasc'], 
-                            perfil=user['perfil'])
-            else:
-                return None
-        def get_ByMail(email):
-            'mongodb first match with email'
-            user = user.find_one({'email': email})
-            if user:
-                return User(id=str(user['_id']), username=user['username'], 
-                            password=user['password'],nome=user['nome'], 
-                            foto=user['foto'],cpf=user['cpf'],email=user['email'], 
-                            telefone=user['telefone'],data_nasc=user['data_nasc'], 
-                            perfil=user['perfil'])
-            else:
-                return None
-    app = Flask(__name__)
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.get_ByMail(form.username.data)
-        if user and user.password == form.password.data:
-            flask_login.login_user(user)
-            #print('Logged in successfully.')
-            next = request.args.get('next')
-            return redirect(next or url_for('index'))
-        else:
-            print('Incorrect username or password.')
-        return  render_template('login.html', form=form)
-
-
-
-
-
-
-
-
-
-    #@flask_login.LoginManager.request_loader
-'''
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    user_data = request.get_json()
-    # login = flask_login.LoginManager.init_app(app)
-    class LoginForm(FlaskForm):
-        username = StringField('email', validators=[DataRequired()])
-        password = StringField('password', validators=[DataRequired()])
-        # remember = BooleanField('remember me')
-        # submit =   SubmitField('Sign In')
-    
-    form = LoginForm()
-    
-    class User(flask_login.UserMixin):
-        def __init__(self, id, username, password, nome, foto, cpf, email, 
-                    telefone, data_nasc,perfil):
-                super().__init__()
-                self.id = id  
-                self.username = username
-                self.password = password
-                self.nome = nome
-                self.foto = foto
-                self.cpf = cpf 
-                self.email = email 
-                self.telefone = telefone
-                self.data_nasc = data_nasc
-                self.perfil = perfil
+                'id = id  
+                'username = username
+                'password = password
+                'nome = nome
+                'foto = foto
+                'cpf = cpf 
+                'email = email 
+                'telefone = telefone
+                'data_nasc = data_nasc
+                'perfil = perfil
         def get(id):
             'mongodb first match with id'
             user = users.find_one({'_id': id}) #.Oid
@@ -159,8 +62,88 @@ def login():
                             perfil=user['perfil'])
             else:
                 return None
-    def user_loader(user_id):
-        return User.get(user_id)
+        def toJson(self):
+            @self
+            return {
+                'id' = id  
+                'username' = username
+                'password' = password
+                'nome' = nome
+                'foto' = foto
+                'cpf' = cpf 
+                'email' = email 
+                'telefone' = telefone
+                'data_nasc' = data_nasc
+                'perfil' = perfil
+            }
+             
+
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    user_data = request.get_json()
+    # login = flask_login.LoginManager.init_app(app)
+    class LoginForm(FlaskForm):
+        username = StringField('email', validators=[DataRequired()])
+        password = StringField('password', validators=[DataRequired()])
+        # remember = BooleanField('remember me')
+        # submit =   SubmitField('Sign In')
+    
+    form = LoginForm()
+    
+    class User(flask_login.UserMixin):
+        def __init__(id, username, password, nome, foto, cpf, email, 
+                    telefone, data_nasc,perfil,self):
+                super().__init__()
+                'id = id  
+                'username = username
+                'password = password
+                'nome = nome
+                'foto = foto
+                'cpf = cpf 
+                'email = email 
+                'telefone = telefone
+                'data_nasc = data_nasc
+                'perfil = perfil
+        def get(id):
+            'mongodb first match with id'
+            user = users.find_one({'_id': id}) #.Oid
+            if user:
+                return User(id=str(user['id']), username=user['name'], 
+                            password=user['password'],nome=user['name'], 
+                            foto=user['foto'],cpf=user['cpf'],email=user['email'], 
+                            telefone=user['telefone'],data_nasc=user['data_nasc'], 
+                            perfil=user['perfil'])
+            else:
+                return None
+        def get_ByMail(email):
+            'mongodb first match with email'
+            user = users.find_one({'email': email})
+            if user:
+                return User(id=str(user['_id']), username=user['name'], 
+                            password=user['password'],nome=user['name'], 
+                            foto=user['foto'],cpf=user['cpf'],email=user['email'], 
+                            telefone=user['telefone'],data_nasc=user['data_nasc'], 
+                            perfil=user['perfil'])
+            else:
+                return None
+        def toJson(self):
+            return ({'id' = id,  
+                'username' = username,
+                'password' = password,
+                'nome' = nome,
+                'foto' = foto,
+                'cpf' = cpf ,
+                'email' = email, 
+                'telefone' = telefone,
+                'data_nasc' = data_nasc,
+                'perfil' = perfil})
+             
+
+    #@flask_login.LoginManager.user_loader
+    #def user_loader(user_id):
+     #   return User.get(user_id)
     #app = Flask(__name__)
     #form = LoginForm()
 
@@ -171,12 +154,13 @@ def login():
         user = userClass.get_ByMail(mail)
         
         if user and user.password == password:
-            return dumps(user)
+            print('Logged in successfully.')
+            return user.toJson()
         else:
             print('Incorrect username or password.')
             return 'False'
-    res = letLogin(user_data, User)
-    return res  
+    
+    return letLogin(user_data, User)
 
 
 
@@ -192,21 +176,25 @@ def success():
 
 
 
-@app.route('/register', methods=('GET', 'POST'))
+@app.route('/create_client', methods=('GET', 'POST'))
 def create_client():
             request_data = request.get_json()
-
+            print(request_data)
             if request.method == 'POST':
-                name = request_data["name"]
+                name = request_data["nome"]
                 cpf = request_data['cpf']
                 email = request_data['email']
                 password = request_data['password']
                 telefone = request_data['telefone']
                 data_nasc = request_data['data_nasc']
-                foto = request_data['photo']
+                for x  in request_data.keys():
+                    if x == 'foto':
+                        foto = request_data['foto']
+                else:
+                    foto = 'missing photo'
                 perfil =  0
                 time_stamp = datetime.datetime.now()
-                
+                #pass_check = request_data['confirm-password']
                 if not name:
                     print('Nome is required!')
                 elif not cpf:
@@ -221,20 +209,25 @@ def create_client():
                     print('Data de Nascimento is required!')
                 elif not perfil:
                     print('Perfil is required!')
-                    check = users.count_documents({"email":email})
-                if check > 0:    
-                        return "Email já existe!"
-
-                users.insert_one({'name': name, 'cpf': cpf, 'email': email,
-                                             'password': password, 'telefone': telefone, 'data_nasc': data_nasc,
-                                               'perfil': perfil,
-                                               'foto':foto,
-                                               'time_stamp': time_stamp})
-                return "Cadastrado!"
-
-
-
-
+                check = users.count_documents({"email":email})
+            if check > 0:    
+                    return "Email já existe!"
+            else:
+                     global User
+                     new_user =( res := User(                   
+                     id = id ,
+                     username = email,
+                     password = password,
+                     nome = name,
+                     foto = foto,
+                     cpf = cpf ,
+                     email = email ,
+                     telefone = telefone,
+                     data_nasc = data_nasc,
+                     perfil = 'placeholder'))
+                     users.insert_one(res.toJson())
+                     print('Usuário cadastrado com sucesso!')
+            return res.toJson()
 
 products=db.products
 @app.route('/create_product/', methods=('GET', 'POST')) 
