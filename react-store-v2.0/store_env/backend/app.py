@@ -26,56 +26,56 @@ users = db.users
 #liga debug na chamada do flask. doc flask run --help
 CORS(app)
 
-class User(flask_login.UserMixin):
-        def __init__(self, id, username, password, nome, foto, cpf, email, 
-                    telefone, data_nasc,perfil):
-                super().__init__()
-                'id = id  
-                'username = username
-                'password = password
-                'nome = nome
-                'foto = foto
-                'cpf = cpf 
-                'email = email 
-                'telefone = telefone
-                'data_nasc = data_nasc
-                'perfil = perfil
-        def get(id):
-            'mongodb first match with id'
-            user = users.find_one({'_id': id}) #.Oid
-            if user:
-                return User(id=str(user['id']), username=user['name'], 
-                            password=user['password'],nome=user['name'], 
-                            foto=user['foto'],cpf=user['cpf'],email=user['email'], 
-                            telefone=user['telefone'],data_nasc=user['data_nasc'], 
-                            perfil=user['perfil'])
-            else:
-                return None
-        def get_ByMail(email):
-            'mongodb first match with email'
-            user = users.find_one({'email': email})
-            if user:
-                return User(id=str(user['_id']), username=user['name'], 
-                            password=user['password'],nome=user['name'], 
-                            foto=user['foto'],cpf=user['cpf'],email=user['email'], 
-                            telefone=user['telefone'],data_nasc=user['data_nasc'], 
-                            perfil=user['perfil'])
-            else:
-                return None
-        def toJson(self):
-            @self
-            return {
-                'id' = id  
-                'username' = username
-                'password' = password
-                'nome' = nome
-                'foto' = foto
-                'cpf' = cpf 
-                'email' = email 
-                'telefone' = telefone
-                'data_nasc' = data_nasc
-                'perfil' = perfil
-            }
+# class User(flask_login.UserMixin):
+#         def __init__(self, id, username, password, nome, foto, cpf, email, 
+#                     telefone, data_nasc,perfil):
+#                 super().__init__()
+#                 self.id = id  
+#                 self.username = username
+#                 self.password = password
+#                 self.nome = nome
+#                 self.foto = foto
+#                 self.cpf = cpf 
+#                 self.email = email 
+#                 self.telefone = telefone
+#                 self.data_nasc = data_nasc
+#                 self.perfil = perfil
+#         def get(id):
+#             'mongodb first match with id'
+#             user = users.find_one({'_id': id}) #.Oid
+#             if user:
+#                 return User(id=str(user['id']), username=user['name'], 
+#                             password=user['password'],nome=user['name'], 
+#                             foto=user['foto'],cpf=user['cpf'],email=user['email'], 
+#                             telefone=user['telefone'],data_nasc=user['data_nasc'], 
+#                             perfil=user['perfil'])
+#             else:
+#                 return None
+#         def get_ByMail(email):
+#             'mongodb first match with email'
+#             user = users.find_one({'email': email})
+#             if user:
+#                 return User(id=str(user['_id']), username=user['name'], 
+#                             password=user['password'],nome=user['name'], 
+#                             foto=user['foto'],cpf=user['cpf'],email=user['email'], 
+#                             telefone=user['telefone'],data_nasc=user['data_nasc'], 
+#                             perfil=user['perfil'])
+#             else:
+#                 return None
+#         def toJson(self):
+#             @self
+#             return {
+#                 'id' = id  
+#                 'username' = username
+#                 'password' = password
+#                 'nome' = nome
+#                 'foto' = foto
+#                 'cpf' = cpf 
+#                 'email' = email 
+#                 'telefone' = telefone
+#                 'data_nasc' = data_nasc
+#                 'perfil' = perfil
+#             }
              
 
 
@@ -90,22 +90,22 @@ def login():
         # remember = BooleanField('remember me')
         # submit =   SubmitField('Sign In')
     
-    form = LoginForm()
+    # form = LoginForm()
     
     class User(flask_login.UserMixin):
-        def __init__(id, username, password, nome, foto, cpf, email, 
-                    telefone, data_nasc,perfil,self):
+        def __init__(self,id, username, password, nome, foto, cpf, email, 
+                    telefone, data_nasc,perfil):
                 super().__init__()
-                'id = id  
-                'username = username
-                'password = password
-                'nome = nome
-                'foto = foto
-                'cpf = cpf 
-                'email = email 
-                'telefone = telefone
-                'data_nasc = data_nasc
-                'perfil = perfil
+                self.id = id  
+                self.username = username
+                self.password = password
+                self.nome = nome
+                self.foto = foto
+                self.cpf = cpf 
+                self.email = email 
+                self.telefone = telefone
+                self.data_nasc = data_nasc
+                self.perfil = perfil
         def get(id):
             'mongodb first match with id'
             user = users.find_one({'_id': id}) #.Oid
@@ -129,16 +129,9 @@ def login():
             else:
                 return None
         def toJson(self):
-            return ({'id' = id,  
-                'username' = username,
-                'password' = password,
-                'nome' = nome,
-                'foto' = foto,
-                'cpf' = cpf ,
-                'email' = email, 
-                'telefone' = telefone,
-                'data_nasc' = data_nasc,
-                'perfil' = perfil})
+             return json.dumps(self, default=lambda o: o.__dict__)
+            
+            
              
 
     #@flask_login.LoginManager.user_loader
@@ -148,8 +141,8 @@ def login():
     #form = LoginForm()
 
     def letLogin(userJson,userClass):
-        password = userJson['password']
         mail = userJson['email']
+        password = userJson['password']
         
         user = userClass.get_ByMail(mail)
         
