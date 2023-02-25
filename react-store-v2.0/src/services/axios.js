@@ -1,8 +1,9 @@
 import axios from "axios";
 
 const configure = {
-    local: "http://localhost:5000/"
-    //local: BOTA O SEU LOCALHOST AQUI E COMENTA O MEU, SEU CALVO
+    // local: "http://localhost:5000/"
+    local:"http://localhost:3000/"
+
   };
   
   const http = axios.create({

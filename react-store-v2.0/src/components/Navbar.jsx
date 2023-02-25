@@ -5,7 +5,7 @@ function NavBar(props) {
   const [selected, setSelected] = React.useState("produtos");
   const [initialProductState] = React.useState(props.produtos);
   const [openFilter, setOpenFilter] = React.useState(false);
-  const [perfil, setPerfil] = React.useState(1);
+  const [perfil, setPerfil] = React.useState(0);
 
   const handleQuery = (e) => {
     if (e.target.value == ""){
@@ -46,11 +46,14 @@ function NavBar(props) {
   };
 
   return (
-    <nav>
+    <nav className="bg-white border-b-4 rounded-lg">
       
-      <div className="grid bg-white  grid-flow-col-dense grid-cols-12 justify-around    h-16 text-center font-mono text-2x font-extrabold border-b-4 border-x-2 ">
-        <div className=" col-start-1 sm:col-start-2 col-span-2 mt-2 w-40 sm:w-96">
-          <img src="src/assets/e-store-logo.svg" alt="logo e-cart" className="w-40" />
+      <div className="grid bg-white  grid-flow-col-dense grid-cols-12 justify-around container m-auto   h-16 text-center font-mono text-2x font-extrabold ">
+        <div  className=" col-start-1 sm:col-start-2 col-span-2 mt-2 w-40 sm:w-96">
+          <a href={"/"}>
+          <img  src="src/assets/logo-e-store2.svg" alt="logo e-cart" className="w-40" />
+          </a>
+
         </div>
         <div className="flex col-start-9 md:col-start-7 lg:col-span-5 text-sm justify-center">
           <label className="relative block flex  col-start-9 md:col-start-7 lg:col-span-5 justify-center text-slate-700">

@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const {Schema} = mongoose
 
 const UserSchema = new Schema({
-    nome: String,
+    name: String,
     cpf: String,
     email: {
         type: String,
@@ -12,12 +12,12 @@ const UserSchema = new Schema({
     password: String,
     telefone: String,
     data_nasc: String,
- 
+    photo:String,
     perfil: {
         type:Number,
         default:1 //0 = admin, 1 = usuario
     },
-    ative: {
+    active: {
         type:Boolean,
         default:true
     }

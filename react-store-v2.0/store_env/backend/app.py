@@ -19,8 +19,8 @@ key = os.urandom(24).hex()
 app = Flask(__name__)
 app.config['SECRET_KEY'] = key
 
-mongoConnection = connectionClass()
-db=mongoConnection.client()
+mongoConnection = connectionClass.connectDB()
+db=mongoConnection.client.vendinha
 users = db.users
 CORS(app)
 
@@ -142,7 +142,7 @@ def create_product():
             
 @app.route('/products_list', methods=('GET', 'POST'))
 def products_list():
-    prod = list(products.find())
+    prod = list(db.products.find())
     json_data = dumps(prod)
     print(json_data)
     return json_data
