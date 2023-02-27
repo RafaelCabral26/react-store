@@ -144,5 +144,4 @@ def create_product():
 def products_list():
     prod = list(db.products.find())
     json_data = dumps(prod)
-    print(json_data)
     return json_data

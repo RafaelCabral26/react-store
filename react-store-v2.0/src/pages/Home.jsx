@@ -1,15 +1,30 @@
-import React from 'react'
+import  React, {useEffect } from 'react'
 import NavBar from '../components/Navbar'
 import Products from '../components/Products'
-import { products } from '../data/data'
-
+import http from '../services/axios'
 export const Home = () => {
-  const [produtos, productsState] = React.useState(products);
+  const [produtos, productsState] = React.useState([]);
+  const [initialProductsList, setInitialProductsList] = React.useState([]) 
+  useEffect(() => {
+    http
+      .get("/products_list")
+      .then((res) => {
+        console.log("get products list");
+        productsState(res.data);
+        setInitialProductsList(res.data)
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
   
   return (
     <div>
-      <NavBar produtos={produtos} productsState={productsState}></NavBar>
-     <Products produtos={produtos}></Products>
+      <NavBar initialProductsList={initialProductsList} produtos={produtos} productsState={productsState}>
+      </NavBar>
+     <Products produtos={produtos}>
+      
+     </Products>
     </div>
   )
 }

@@ -7,7 +7,7 @@ export function AdminPage() {
   const [crudPages, setCrudPages] = React.useState("create");
 
   return (
-    <div className="">
+    <div>
       <NavBar></NavBar>
       <div className="grid grid-cols-12 mx-auto border container relative">
         <AdminSidebar setCrudPages={setCrudPages}></AdminSidebar>

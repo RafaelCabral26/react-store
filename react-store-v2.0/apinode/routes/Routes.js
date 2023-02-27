@@ -1,4 +1,5 @@
 const router = require("express").Router()
 const userRoutes = require("./UserRoutes")
-
-export const routes = router.use(userRoutes)
+const productRoutes = require("./ProductRoutes")
+const routes = router.use(userRoutes, productRoutes)
+module.exports = routes

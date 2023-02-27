@@ -8,8 +8,8 @@ export const TableOfProducts = (props) => {
     http
       .get("/products_list")
       .then((res) => {
-        console.log("Render useEffect products_list request");
         setListOfProducts(res.data);
+        console.log("Render useEffect products_list request", listOfProducts);
       })
       .catch((err) => {
         console.log(err);

@@ -1,37 +1,30 @@
-import React from "react";
-
-function NavBar(props) {
+import React, {useContext, useEffect} from "react";
+function NavBar({produtos, productsState, initialProductsList}) {
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = React.useState("produtos");
-  const [initialProductState] = React.useState(props.produtos);
   const [openFilter, setOpenFilter] = React.useState(false);
   const [perfil, setPerfil] = React.useState(0);
+  
+  function teste() {
+    console.log(initialProductsList)
+}
 
   const handleQuery = (e) => {
-    if (e.target.value == ""){
-      return props.productsState(initialProductState)
-    }
-    let result = props.productsState(
-    props.produtos.filter(prod => {
-        
-        if(e.target.value == "") {
-          return prod
-        }else if(prod.name.toLowerCase().substring(0,3).includes(e.target.value.toLowerCase())) {
-      return prod
-      }
-      return console.log("Nenhum item foi encontrado!");
-    })
-    
-    )
-    return result
+    if(e.target.value === "" || e.key === 8){
+      return productsState(initialProductsList)
+    };  
+    productsState(
+      produtos.filter(prod => {
+      return prod.name.toLowerCase().substring(0,3).includes(e.target.value.toLowerCase())
+    }));
   }
   const handleSelectedAndInitial = (e) => {    
     setSelected(e.target.value);
-    props.productsState(initialProductState);
+    productsState(produtos);
   };
   const handleFilter = () => {
-    props.productsState(
-      props.produtos.filter((e) => {
+    productsState(
+      produtos.filter((e) => {
         if (e.group == selected || selected == "produtos") {
           return e;
         }
@@ -59,7 +52,7 @@ function NavBar(props) {
           <label className="relative block flex  col-start-9 md:col-start-7 lg:col-span-5 justify-center text-slate-700">
             <input className="w-56 lg:w-96  bg-white sm:block hidden input-field border-2 border-teal-300 focus:border-teal-500" placeholder="Pesquisar..." type="text" onChange={handleQuery} />
 
-            <button className="absolute inset-y-0 right-0 flex items-center pr-3 hidden sm:block">
+            <button onClick={teste} className="absolute inset-y-0 right-0 flex items-center pr-3 hidden sm:block">
               <svg className="h-5 w-5 fill-black" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="30" height="30" viewBox="0 0 30 30">
                 <path d="M 13 3 C 7.4889971 3 3 7.4889971 3 13 C 3 18.511003 7.4889971 23 13 23 C 15.396508 23 17.597385 22.148986 19.322266 20.736328 L 25.292969 26.707031 A 1.0001 1.0001 0 1 0 26.707031 25.292969 L 20.736328 19.322266 C 22.148986 17.597385 23 15.396508 23 13 C 23 7.4889971 18.511003 3 13 3 z M 13 5 C 17.430123 5 21 8.5698774 21 13 C 21 17.430123 17.430123 21 13 21 C 8.5698774 21 5 17.430123 5 13 C 5 8.5698774 8.5698774 5 13 5 z"></path>
               </svg>

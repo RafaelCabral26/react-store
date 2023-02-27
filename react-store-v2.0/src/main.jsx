@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { Home } from "./pages/Home";
 import "./index.css";
-import { UserLogin } from "./pages/UserLogin";
+import { UserPage } from "./pages/UserPage";
 import { AdminPage } from "./pages/AdminPage";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
@@ -13,7 +13,7 @@ const router = createBrowserRouter([
   },
   {
     path: "login",
-    element: <UserLogin></UserLogin>,
+    element: <UserPage></UserPage>,
   },
   {
     path: "admin",

@@ -25,3 +25,4 @@ router.post("/login", async function(req,res) {
         return res.status(500).json({error:err,message:"Erro ao fazer login"})
     }
 })
+module.exports = router

@@ -10,8 +10,8 @@ connect()
 //Express Configuraçao
 app.use(cors())
 app.use(express.json())
-app.use(router)
 //Express Rotas
+app.use(router)
 app.use(routes)
 
 //Port
